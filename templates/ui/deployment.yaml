@@ -1,0 +1,44 @@
+{{- if .Values.ui.create  }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "finala.fullname" . }}-ui
+  labels:
+{{ include "finala.labels" . | indent 4 }}
+    component: {{ include "finala.fullname" . }}-ui
+  annotations:
+{{- if .Values.ui.annotations }}
+{{ toYaml .Values.ui.annotations | indent 4}}
+{{- end }}
+{{ include "finala.annotations" . | indent 4 }}
+spec:
+  selector:
+    matchLabels:
+{{ include "finala.matchLabels" . | indent 6 }}
+      component: {{ include "finala.fullname" . }}-ui
+  replicas: {{ .Values.ui.replicas }}
+  template:
+    metadata:
+      labels:
+{{ include "finala.labels" . | indent 8 }}
+        component: {{ include "finala.fullname" . }}-ui
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-ui
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.ui.resources | nindent 12 }}
+          args: ["ui"]
+          volumeMounts:
+            - name: {{ include "finala.fullname" . }}-configmap-ui
+              mountPath: /etc/finala
+      volumes:
+        - name: {{ include "finala.fullname" . }}-configmap-ui
+          configMap:
+            name: {{ include "finala.fullname" . }}-configmap-ui
+            items:
+              - key: config
+                path: config.yaml
+
+{{- end -}}

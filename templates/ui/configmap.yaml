@@ -1,0 +1,17 @@
+{{- if .Values.api.create  }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "finala.fullname" . }}-configmap-ui
+  labels:
+{{ include "finala.labels" . | indent 4 }}
+  annotations:
+{{ include "finala.annotations" . | indent 4 }}
+data: 
+  config: |-
+    ---
+    log_level: {{ .Values.ui.application.log_level }}
+    api_server:
+      address: {{ .Values.api.ingress.host }} 
+
+{{- end -}}

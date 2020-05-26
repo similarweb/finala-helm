@@ -1,0 +1,27 @@
+{{- if .Values.api.create  }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "finala.fullname" . }}-configmap-api
+  labels:
+{{ include "finala.labels" . | indent 4 }}
+  annotations:
+{{ include "finala.annotations" . | indent 4 }}
+data: 
+  config: |-
+    ---
+    log_level: {{ .Values.api.application.log_level }}
+    storage:
+      {{- if .Values.api.application.storage.elasticsearch.active  }}
+      elasticsearch:
+        index: {{ .Values.api.application.storage.elasticsearch.index }}
+        username: {{ .Values.api.application.storage.elasticsearch.username }}
+        password: {{ .Values.api.application.storage.elasticsearch.password }}
+        endpoints: 
+          - {{ template "finala.elasticsearch.host" . }}
+      {{- end -}}
+      
+{{- end -}}
+
+
+

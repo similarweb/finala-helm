@@ -1,0 +1,32 @@
+{{- if (eq .Values.storage.type "internal") }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  labels:
+{{ include "finala.labels" . | indent 4 }}
+    component: {{ include "finala.fullname" . }}-elasticsearch
+spec:
+  selector:
+    matchLabels:
+      component: {{ include "finala.fullname" . }}-elasticsearch
+  template:
+    metadata:
+      labels:
+        component: {{ include "finala.fullname" . }}-elasticsearch
+    spec:
+      containers:
+      - name: {{ include "finala.fullname" . }}-elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+        env:
+        - name: discovery.type
+          value: single-node
+        ports:
+        - containerPort: 9200
+          name: http
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 500m
+            memory: 1Gi
+{{- end }}

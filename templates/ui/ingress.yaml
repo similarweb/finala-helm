@@ -1,0 +1,23 @@
+{{- if and (.Values.ui.create) (.Values.ui.ingress.create) }}
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ template "finala.fullname" . }}-ui
+  labels:
+{{ include "finala.labels" . | indent 4 }}
+  annotations:
+{{- if .Values.ui.ingress.annotations }}
+{{ toYaml .Values.ui.ingress.annotations | indent 4 }}
+{{- end }}
+{{ include "finala.annotations" . | indent 4 }}
+spec:
+  rules:
+    - host: {{ .Values.ui.ingress.host | replace "http://" "" | replace "https://" "" }}
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: {{ include "finala.fullname" . }}-ui
+              servicePort: {{ .Values.ui.service.externalPort }}
+{{- end -}}

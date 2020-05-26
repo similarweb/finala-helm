@@ -1,0 +1,22 @@
+{{- if .Values.ui.create  }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "finala.fullname" . }}-ui
+  labels:
+{{ include "finala.labels" . | indent 4 }}
+  annotations:
+{{- if .Values.ui.service.annotations }}
+{{ toYaml .Values.ui.service.annotations | indent 4 }}
+{{- end }}
+{{ include "finala.annotations" . | indent 4 }}
+spec:
+  selector:
+{{ include "finala.matchLabels" . | indent 4 }}
+    component: {{ include "finala.fullname" . }}-ui
+  type: {{ .Values.ui.service.type }}
+  ports:
+  - port: {{ .Values.ui.service.externalPort }}
+    targetPort: 8080
+    name: "http"
+{{- end -}}

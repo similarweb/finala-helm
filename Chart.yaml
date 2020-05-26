@@ -1,0 +1,14 @@
+apiVersion: v2
+name: finala-helm
+version: 0.1.0
+appVersion: 1.0.0
+description: A resource cloud scanner that analyzes and reports wasteful and unused resources to cut unwanted expenses.
+keywords:
+    - kubernetes
+    - deployment
+    - visibility
+sources:
+    - https://github.com/similarweb/finala
+maintainers:
+    - name: Elad Kaplan
+      email: elad.kaplan@similarweb.com

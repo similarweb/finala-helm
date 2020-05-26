@@ -1,0 +1,63 @@
+     
+ For more details, please visit https://github.com/similarweb/finala.
+ 
+                             ,,▄▄▄▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▄▄╓,
+                       ,▄▄▓▓▓▓▓▓█▀▀▀▀`^└``    `'^`└▀▀▀▀▀▓▓▓▓▓▓▓▄,
+                    ▄▓▓▓▓█▀▀^            ]▓▓▓▓▌             ╙▀▀▓▓▓▓▄
+                 ▄▓▓▓█▀`          ╓▄▄▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▄▄           "▀▓▓▓▄
+               ╓▓▓▓▀            ▓▓▓▓▓▓▓▓▀▀└`└'^▀▀▓▓▓▓▓▓▓╕           ╙▓▓▓▄
+              ╔▓▓▀             ▐▓▓▓▓▓▓▓▓▓▄▄,      └`                  ╙▓▓▌
+            ▄▄▓▓▓                ▀▀▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▄▄,                ▐▓▓
+        ,▄▓▓▓█▓▓▓                      └╙▀▀▀▀▀█▓▓▓▓▓▓▓▓▓▓▄             ▓▓▓⌐
+      ╓▓▓▓▀^  ▓▓▓▓µ           ╔▄▄▓▓▓▓▓▄          ▓▓▓▓▓▓▓▓▓           ,▓▓▓▓⌐
+     ▓▓▓▀     ▓▓▓▓▓▓▄          └▀▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▀▀          ╓▓▓▓▓▓▓
+    ▓▓▓¬      ╙▓▓▓▓▓▓▓▓▄╥           '▀▀▀▀▀▓▓▓▓▓▀▀▀▀└`          ,▄▓▓▓▓▓▓▓▓▓
+    ▓▓▓         ▓▓▓▓▓▓▓▓▓▓▓▓▄▄╓,         └▀▀▀▀┘          ╓▄▄▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▄
+    ▓▓▓▄         "▀▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▄▄▄▄▄▄▄▄▄▄▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▀   ^▀█▓▓▓▄
+    ▓▓▓▓▓ç          "▀▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▀▀          ▀▓▓▓▄
+    ▓▓▓▓▓▓▓▄,           '▀▀█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                ▀▓▓▌
+     ▀▓▓▓▓▓▓▓▓▓▄▄,            '"▀▀▀▀▀██▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓                  ╟▓▓
+      ╙▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▄▄▄,,              ,,▄▄▄▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▀                   ╫▓▓
+        '▀▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▀"                    ▓▓▓▓
+            ▀▀▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▀▀`                    ,▄▓▓▓▓▓
+              ╫▓▓▀▀▀█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓█▀▀▀`                     ,▄▓▓▓▓▓▓▓▓▌
+              ▓▓▌        "▓▓▓▓▓▓▓▓▓▓▓▓▓▓▄,                         ,╓▄▄▓▓▓▓▓▓▓▓▓▓▓▀
+              ▓▓▓▄         ╙█▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▄▄▄▄▄▄▄▄▄▄▄▄▄▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▀
+    
+
+Please wait while the Finala is deployed on your cluster.
+
+To verify that Finala has started, run:
+
+    $ kubectl get svc,deployments,pods -l "release={{ .Release.Name }},app={{ include "finala.name" . }}"
+
+
+Get the URL for the Finala endpoints:
+
+{{- if not (.Values.ui.ingress.create) }}
+
+    $ kubectl port-forward svc/{{ include "finala.fullname" . }}-ui 8080:80
+
+    Then you should be able to visit Finala UI at http://127.0.0.1:8080.
+
+    NOTE: To set your own domain you can change the value: `Values.ingress.ui.host`
+
+{{- else }}
+
+    Then you should be able to visit Finala ui at {{ .Values.ui.ingress.host }}.
+
+{{- end }}
+
+{{- if not (.Values.api.ingress.create) }}
+
+    $ kubectl port-forward svc/{{ include "finala.fullname" . }}-api 8081:80
+
+    Then you should be able to visit Finala api at http://127.0.0.1:8081.
+
+    NOTE: To set your own domain you can change the value: `Values.api.ingress.host`
+
+{{- else }}
+
+    Then you should be able to visit Finala api at {{ .Values.api.ingress.host }}.
+
+{{- end }}

@@ -1,0 +1,16 @@
+{{- if (eq .Values.storage.type "internal") }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "finala.fullname" . }}-elasticsearch
+  labels:
+{{ include "finala.labels" . | indent 4 }}
+    component: {{ include "finala.fullname" . }}-elasticsearch
+spec:
+  type: ClusterIP
+  selector:
+    component: {{ include "finala.fullname" . }}-elasticsearch
+  ports:
+  - port: 9200
+    targetPort: 9200
+{{- end }}

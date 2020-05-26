@@ -1,0 +1,40 @@
+{{- if and (.Values.collector.create) (.Values.collector.run_at_deployment)  }}
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "finala.fullname" . }}-collector-at-deployment
+  labels:
+{{ include "finala.labels" . | indent 4 }}
+    component: {{ include "finala.fullname" . }}--at-deployment
+spec:
+  template:
+    metadata:
+      labels:
+{{ include "finala.labels" . | indent 8 }}
+        component: {{ include "finala.fullname" . }}--at-deployment
+      annotations:
+{{- if .Values.collector.annotations }}
+{{ toYaml .Values.collector.annotations | indent 8}}
+{{- end }}
+{{ include "finala.annotations" . | indent 8 }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: {{ .Chart.Name }}-collector-at-deployment
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          args: ["collector"]
+          volumeMounts:
+            - name: {{ include "finala.fullname" . }}-configmap-collector
+              mountPath: /etc/finala
+          env:
+            {{- include "finala.environmentVars" .Values.collector | nindent 12 }}   
+      volumes:
+        - name: {{ include "finala.fullname" . }}-configmap-collector
+          configMap:
+            name: {{ include "finala.fullname" . }}-configmap-collector
+            items:
+              - key: config
+                path: config.yaml
+      
+{{- end -}}

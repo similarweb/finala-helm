@@ -1,0 +1,46 @@
+{{- if .Values.collector.create  }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "finala.fullname" . }}-collector
+  labels:
+{{ include "finala.labels" . | indent 4 }}
+    component: {{ include "finala.fullname" . }}-collector
+spec:
+  concurrencyPolicy: "Forbid"
+  schedule: "{{ .Values.collector.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+{{ include "finala.labels" . | indent 12 }}
+            component: {{ include "finala.fullname" . }}-collector
+          annotations:
+{{- if .Values.collector.annotations }}
+{{ toYaml .Values.collector.annotations | indent 12}}
+{{- end }}
+{{ include "finala.annotations" . | indent 12 }}
+        spec:
+          restartPolicy: "OnFailure"
+          containers:
+            - name: {{ .Chart.Name }}-collector
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              resources:
+                {{- toYaml .Values.collector.resources | nindent 16 }}
+              args: ["collector"]
+              volumeMounts:
+                - name: {{ include "finala.fullname" . }}-configmap-collector
+                  mountPath: /etc/finala
+              env:
+                {{- include "finala.environmentVars" .Values.collector | nindent 18 }}
+          volumes:
+            - name: {{ include "finala.fullname" . }}-configmap-collector
+              configMap:
+                name: {{ include "finala.fullname" . }}-configmap-collector
+                items:
+                  - key: config
+                    path: config.yaml
+
+{{- end -}}

@@ -20,7 +20,7 @@ helm install my-release .
 ## Production Recommendations
 
 1. Work with external Elasticsearch storage
-2. Don't use AWS AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY as environment variable (use only in minikube). you can use [Kube2IAM](https://github.com/jtblin/kube2iam) for example.
+2. Use [Kube2IAM](https://github.com/jtblin/kube2iam) for Finala access.
 
 ## Configuration
 

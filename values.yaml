@@ -17,7 +17,6 @@ api:
   create: true
   replicas: 1
   annotations: {}
-  
   application:
     log_level: INFO
     storage:
@@ -67,7 +66,8 @@ ui:
 collector:
   create: true
   schedule: "* * 1 * *" 
-  annotations: {}
+  annotations: 
+    # iam.amazonaws.com/role: arn:aws:iam::ACCOUNT-ID:role/finala-production
   run_at_deployment: true
   environmentVars: 
     # AWS_ACCESS_KEY_ID: value

@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: similarweb/finala
-  tag: 0.2.0
+  tag: 0.2.1
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -182,6 +182,19 @@ collector:
               period: 24h 
               start_time: 168h # 24h * 7d
               constraint:
+                operator: "=="
+                value: 0
+          neptune:
+            - description: Neptune Requests Gremlin/Sparql
+              metrics:
+                - name: GremlinRequestsPerSec
+                  statistic: Sum
+                - name: SparqlRequestsPerSec
+                  statistic: Sum              
+              period: 24h 
+              start_time: 168h # 24h * 7d
+              constraint:
+                formula: GremlinRequestsPerSec + SparqlRequestsPerSec
                 operator: "=="
                 value: 0
         resources:

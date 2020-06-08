@@ -71,3 +71,11 @@ Parameter | Description | Default
 `collector.application.name` | The tag name of the collector | `general`
 `collector.application.log_level` | The collector application log level | `info`
 `collector.application.api_server.bulk_interval` | The bulk interval of sending the resources detected to the api component | `5s`
+| **notifier** |
+`notifier.create` | Should we create Notifier component| `true`
+`notifier.schedule` | Schedule for the Notifier CronJob  | `0 8 * * 0`
+`notifier.annotations` | The annotations for Notifier  | `{}`
+`notifier.environmentVars` | Notifier environment variables  | `{}`
+`notifier.resources` | The [resources] to allocate for the Notifier containers | undefined
+`notifier.application.log_level` | The Notifier application log level | `info`
+`notifier.application.ui_address` | Finala UI full url | `https://finala.url`

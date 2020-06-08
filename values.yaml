@@ -63,12 +63,38 @@ ui:
     #   cpu: 100m
     #   memory: 128Mi
 
+notifier:
+  create: true
+  schedule: "0 8 * * 0" # Run once a week on Sunday at 08:00
+  annotations: {}
+  environmentVars: 
+    # key: value
+  resources:
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  application:
+    log_level: INFO
+    ui_address: "https://finala.url" 
+    notifiers: {}
+      # slack:
+      #   token: slack_token
+      #   default_channels:
+      #     - '#default-channel'
+      #   notify_by_tags:
+      #     <notification_group>:
+      #       tags:
+      #         - name: name
+      #           value: value
+      #       notify_to:
+      #           - slack username
+      #           - '#slack-channelname'
+
 collector:
   create: true
   schedule: "0 8 * * *" # Run every day at 08:00
   annotations: 
     # iam.amazonaws.com/role: arn:aws:iam::ACCOUNT-ID:role/finala-production
-  run_at_deployment: true
   environmentVars: 
     # AWS_ACCESS_KEY_ID: value
     # AWS_SECRET_ACCESS_KEY: value

@@ -59,6 +59,7 @@ Parameter | Description | Default
 `ui.annotations` | The annotations used in the service | `{}`
 `ui.externalPort` | The external port for UI server | `80`
 `ui.ingress.create` | If true, create the resources | `false`
+`ui.ingress.host` | The user interface endpoint | `https://finala.ui.com`
 `ui.ingress.annotations` | The annotations used in the ingress | `{}`
 `api.resources` | The [resources] to allocate for the UI containers | undefined
 | **collector** |

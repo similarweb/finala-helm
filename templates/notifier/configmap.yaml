@@ -12,7 +12,7 @@ data:
     ---
     log_level: {{ .Values.notifier.application.log_level }}
     api_server_address: http://{{ template "finala.fullname" . }}-api
-    ui_address: {{ .Values.notifier.application.ui_address }}
+    ui_address: {{ .Values.ui.ingress.host | replace "http://" "" | replace "https://" "" }}
     notifiers:
     {{- toYaml .Values.notifier.application.notifiers | nindent 6 }}
 {{- end -}}

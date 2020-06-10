@@ -56,6 +56,7 @@ ui:
   
   ingress:
     create: false
+    host: "https://finala.ui.com"
     annotations: {}
 
   resources:
@@ -75,14 +76,14 @@ notifier:
     #   memory: 128Mi
   application:
     log_level: INFO
-    ui_address: "https://finala.url" 
-    notifiers: {}
+    notifiers:
       # slack:
       #   token: slack_token
       #   default_channels:
       #     - '#default-channel'
       #   notify_by_tags:
       #     <notification_group>:
+      #       minimum_cost_to_present: <minimum price which notifier will notify about>
       #       tags:
       #         - name: name
       #           value: value

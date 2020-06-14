@@ -183,25 +183,25 @@ collector:
                 - name: ConsumedReadCapacityUnits
                   statistic: Sum
                 - name: ProvisionedReadCapacityUnits
-                  statistic: Sum
+                  statistic: Average
               period: 24h 
               start_time: 168h # 24h * 7d
               constraint:
-                formula: ConsumedReadCapacityUnits / ProvisionedReadCapacityUnits * 100 
+                formula: ( ConsumedReadCapacityUnits / 7 / 86400 ) / ProvisionedReadCapacityUnits * 100
                 operator: "<"
-                value: 10
+                value: 80
             - description: Provisioned write capacity units
               metrics:
                 - name: ConsumedWriteCapacityUnits
                   statistic: Sum
                 - name: ProvisionedWriteCapacityUnits
-                  statistic: Sum
+                  statistic: Average
               period: 24h 
               start_time: 168h # 24h * 7d
               constraint:
-                formula: ConsumedWriteCapacityUnits / ProvisionedWriteCapacityUnits * 100 
+                formula: ( ConsumedWriteCapacityUnits / 7 / 86400 ) / ProvisionedWriteCapacityUnits * 100
                 operator: "<"
-                value: 10
+                value: 80
           lambda:
             - description: Lambda invocations count
               metrics:
@@ -232,7 +232,7 @@ collector:
                   statistic: Sum
                 - name: "PutRecord.Bytes"
                   statistic: Sum              
-              period: 24h 
+              period: 24h
               start_time: 168h # 24h * 7d
               constraint:
                 # The go module Knetic/govaluate has a built in escaping
@@ -240,7 +240,7 @@ collector:
                 # [PutRecord.Bytes] will escape the parameter name
                 formula: "[PutRecord.Bytes] + [PutRecords.Bytes]"
                 operator: "=="
-                value: 0                
+                value: 0              
         resources:
           iamLastActivity:
             description: Last user activity

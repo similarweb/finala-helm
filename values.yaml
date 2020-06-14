@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: similarweb/finala
-  tag: 0.2.1
+  tag: 0.3.0
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -225,6 +225,22 @@ collector:
                 formula: GremlinRequestsPerSec + SparqlRequestsPerSec
                 operator: "=="
                 value: 0
+          kinesis:
+            - description: Kinesis Put Record(s) Sum (Bytes)
+              metrics:
+                - name: "PutRecords.Bytes"
+                  statistic: Sum
+                - name: "PutRecord.Bytes"
+                  statistic: Sum              
+              period: 24h 
+              start_time: 168h # 24h * 7d
+              constraint:
+                # The go module Knetic/govaluate has a built in escaping
+                # https://github.com/Knetic/govaluate#escaping-characters
+                # [PutRecord.Bytes] will escape the parameter name
+                formula: "[PutRecord.Bytes] + [PutRecords.Bytes]"
+                operator: "=="
+                value: 0                
         resources:
           iamLastActivity:
             description: Last user activity

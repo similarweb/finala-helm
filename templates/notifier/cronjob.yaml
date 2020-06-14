@@ -1,0 +1,46 @@
+{{- if .Values.notifier.create  }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "finala.fullname" . }}-notifier
+  labels:
+{{ include "finala.labels" . | indent 4 }}
+    component: {{ include "finala.fullname" . }}-notifier
+spec:
+  concurrencyPolicy: "Forbid"
+  schedule: "{{ .Values.notifier.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+{{ include "finala.labels" . | indent 12 }}
+            component: {{ include "finala.fullname" . }}-notifier
+          annotations:
+{{- if .Values.notifier.annotations }}
+{{ toYaml .Values.notifier.annotations | indent 12}}
+{{- end }}
+{{ include "finala.annotations" . | indent 12 }}
+        spec:
+          restartPolicy: "OnFailure"
+          containers:
+            - name: {{ .Chart.Name }}-notifier
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              resources:
+                {{- toYaml .Values.notifier.resources | nindent 16 }}
+              args: ["notifier"]
+              volumeMounts:
+                - name: {{ include "finala.fullname" . }}-configmap-notifier
+                  mountPath: /etc/finala
+              env:
+                {{- include "finala.environmentVars" .Values.notifier | nindent 18 }}
+          volumes:
+            - name: {{ include "finala.fullname" . }}-configmap-notifier
+              configMap:
+                name: {{ include "finala.fullname" . }}-configmap-notifier
+                items:
+                  - key: config
+                    path: config.yaml
+
+{{- end -}}

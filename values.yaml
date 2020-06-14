@@ -56,12 +56,40 @@ ui:
   
   ingress:
     create: false
+    host: "https://finala.ui.com"
     annotations: {}
 
   resources:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
+
+notifier:
+  create: true
+  schedule: "0 8 * * 1" # Run once a week on Monday at 08:00
+  annotations: {}
+  environmentVars: 
+    # key: value
+  resources:
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  application:
+    log_level: INFO
+    notifiers:
+      # slack:
+      #   token: slack_token
+      #   default_channels:
+      #     - '#default-channel'
+      #   notify_by_tags:
+      #     <notification_group>:
+      #       minimum_cost_to_present: <minimum price which notifier will notify about>
+      #       tags:
+      #         - name: name
+      #           value: value
+      #       notify_to:
+      #           - slack username
+      #           - '#slack-channelname'
 
 collector:
   create: true

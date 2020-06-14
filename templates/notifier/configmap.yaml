@@ -1,0 +1,18 @@
+{{- if .Values.notifier.create  }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "finala.fullname" . }}-configmap-notifier
+  labels:
+{{ include "finala.labels" . | indent 4 }}
+  annotations:
+{{ include "finala.annotations" . | indent 4 }}
+data: 
+  config: |-
+    ---
+    log_level: {{ .Values.notifier.application.log_level }}
+    api_server_address: http://{{ template "finala.fullname" . }}-api
+    ui_address: {{ .Values.ui.ingress.host }}
+    notifiers:
+    {{- toYaml .Values.notifier.application.notifiers | nindent 6 }}
+{{- end -}}

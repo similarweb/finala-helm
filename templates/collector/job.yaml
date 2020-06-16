@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "finala.fullname" . }}-collector-at-deployment
+  name: {{ include "finala.fullname" . }}-collector-at-deployment-{{ now | unixEpoch }}
   labels:
 {{ include "finala.labels" . | indent 4 }}
     component: {{ include "finala.fullname" . }}-at-deployment
@@ -21,7 +21,7 @@ spec:
     spec:
       restartPolicy: Never
       containers:
-        - name: {{ .Chart.Name }}-collector-at-deployment-{{ now | unixEpoch }}
+        - name: {{ .Chart.Name }}-collector-at-deployment
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           args: ["collector"]
           volumeMounts:

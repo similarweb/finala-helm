@@ -6,13 +6,13 @@ metadata:
   name: {{ include "finala.fullname" . }}-collector-at-deployment
   labels:
 {{ include "finala.labels" . | indent 4 }}
-    component: {{ include "finala.fullname" . }}--at-deployment
+    component: {{ include "finala.fullname" . }}-at-deployment
 spec:
   template:
     metadata:
       labels:
 {{ include "finala.labels" . | indent 8 }}
-        component: {{ include "finala.fullname" . }}--at-deployment
+        component: {{ include "finala.fullname" . }}-at-deployment
       annotations:
 {{- if .Values.collector.annotations }}
 {{ toYaml .Values.collector.annotations | indent 8}}

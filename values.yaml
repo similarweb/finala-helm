@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: similarweb/finala
-  tag: 0.2.1
+  tag: 0.3.1
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -56,12 +56,40 @@ ui:
   
   ingress:
     create: false
+    host: "https://finala.ui.com"
     annotations: {}
 
   resources:
     # requests:
     #   cpu: 100m
     #   memory: 128Mi
+
+notifier:
+  create: true
+  schedule: "0 8 * * 1" # Run once a week on Monday at 08:00
+  annotations: {}
+  environmentVars: 
+    # key: value
+  resources:
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+  application:
+    log_level: INFO
+    notifiers:
+      # slack:
+      #   token: slack_token
+      #   default_channels:
+      #     - '#default-channel'
+      #   notify_by_tags:
+      #     <notification_group>:
+      #       minimum_cost_to_present: <minimum price which notifier will notify about>
+      #       tags:
+      #         - name: name
+      #           value: value
+      #       notify_to:
+      #           - slack username
+      #           - '#slack-channelname'
 
 collector:
   create: true
@@ -90,7 +118,7 @@ collector:
               - us-west-2
         metrics:
           rds:
-            - description: Database connection count
+            - description: Connection count
               metrics:
                 - name: DatabaseConnections
                   statistic: Sum
@@ -100,7 +128,7 @@ collector:
                 operator: "=="
                 value: 0
           docDB:
-            - description: Database connection count
+            - description: Connection count
               metrics:
                 - name: DatabaseConnections
                   statistic: Sum
@@ -110,7 +138,7 @@ collector:
                 operator: "=="
                 value: 0
           elasticache:
-            - description: connection count
+            - description: Connection count
               metrics:
                 - name: CurrConnections
                   statistic: Sum
@@ -120,7 +148,7 @@ collector:
                 operator: "=="
                 value: 0      
           elb:
-            - description: Loadbalancer requests count
+            - description: Request count
               metrics:
                 - name: RequestCount
                   statistic: Sum
@@ -130,7 +158,7 @@ collector:
                 operator: "=="
                 value: 0  
           elbv2:
-            - description: Application Loadbalancer RequestCount
+            - description: Request count
               metrics:
                 - name: RequestCount
                   statistic: Sum
@@ -140,7 +168,7 @@ collector:
                 operator: "=="
                 value: 0    
           ec2:
-            - description: EC2 CPU utilization 
+            - description: CPU utilization 
               metrics:
                 - name: CPUUtilization
                   statistic: Maximum
@@ -155,27 +183,27 @@ collector:
                 - name: ConsumedReadCapacityUnits
                   statistic: Sum
                 - name: ProvisionedReadCapacityUnits
-                  statistic: Sum
+                  statistic: Average
               period: 24h 
               start_time: 168h # 24h * 7d
               constraint:
-                formula: ConsumedReadCapacityUnits / ProvisionedReadCapacityUnits * 100 
+                formula: ( ConsumedReadCapacityUnits / 7 / 86400 ) / ProvisionedReadCapacityUnits * 100
                 operator: "<"
-                value: 10
+                value: 80
             - description: Provisioned write capacity units
               metrics:
                 - name: ConsumedWriteCapacityUnits
                   statistic: Sum
                 - name: ProvisionedWriteCapacityUnits
-                  statistic: Sum
+                  statistic: Average
               period: 24h 
               start_time: 168h # 24h * 7d
               constraint:
-                formula: ConsumedWriteCapacityUnits / ProvisionedWriteCapacityUnits * 100 
+                formula: ( ConsumedWriteCapacityUnits / 7 / 86400 ) / ProvisionedWriteCapacityUnits * 100
                 operator: "<"
-                value: 10
+                value: 80
           lambda:
-            - description: Lambda invocations count
+            - description: Invocations count
               metrics:
                 - name: Invocations
                   statistic: Sum
@@ -185,7 +213,7 @@ collector:
                 operator: "=="
                 value: 0
           neptune:
-            - description: Neptune Requests Gremlin/Sparql
+            - description: Requests gremlin/sparql
               metrics:
                 - name: GremlinRequestsPerSec
                   statistic: Sum
@@ -197,6 +225,22 @@ collector:
                 formula: GremlinRequestsPerSec + SparqlRequestsPerSec
                 operator: "=="
                 value: 0
+          kinesis:
+            - description: Total put records
+              metrics:
+                - name: "PutRecords.Bytes"
+                  statistic: Sum
+                - name: "PutRecord.Bytes"
+                  statistic: Sum              
+              period: 24h
+              start_time: 168h # 24h * 7d
+              constraint:
+                # The go module Knetic/govaluate has a built in escaping
+                # https://github.com/Knetic/govaluate#escaping-characters
+                # [PutRecord.Bytes] will escape the parameter name
+                formula: "[PutRecord.Bytes] + [PutRecords.Bytes]"
+                operator: "=="
+                value: 0              
         resources:
           iamLastActivity:
             description: Last user activity

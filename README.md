@@ -1,5 +1,7 @@
 # finala-helm
 
+[Finala](https://github.com/similarweb/finala) is a resource cloud scanner that analyzes and reports wasteful and unused resources to cut unwanted expenses.
+
 ## Installation
 
 Clone the git repository

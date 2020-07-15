@@ -243,8 +243,12 @@ collector:
                 value: 0              
         resources:
           iamLastActivity:
+            enable: true
             description: Last user activity
             global: true
             constraint:
               operator: ">="
               value: 90 # 90 Days
+          elasticip:
+            enable: true
+            description: Not associated

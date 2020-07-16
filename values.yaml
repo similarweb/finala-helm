@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: similarweb/finala
-  tag: 0.3.3
+  tag: v0.3.4-rc3
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -251,7 +251,32 @@ collector:
                 # [PutRecord.Bytes] will escape the parameter name
                 formula: "[PutRecord.Bytes] + [PutRecords.Bytes]"
                 operator: "=="
-                value: 0              
+                value: 0
+          redshift:
+            - description: Connection count
+              enable: true
+              metrics:
+                - name: DatabaseConnections
+                  statistic: Sum
+              period: 24h 
+              start_time: 168h # 24h * 7d
+              constraint:
+                operator: "=="
+                value: 0
+          elasticsearch:
+            - description: "IndexRate + SearchRate"
+              enable: true
+              metrics:
+                - name: IndexingRate
+                  statistic: Sum
+                - name: SearchRate
+                  statistic: Sum
+              period: 24h 
+              start_time: 168h # 24h * 7d
+              constraint:
+                formula: IndexingRate + SearchRate
+                operator: "=="
+                value: 0                                   
         resources:
           iamLastActivity:
             enable: true

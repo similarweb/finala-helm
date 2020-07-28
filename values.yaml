@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 image:
   repository: similarweb/finala
-  tag: 0.3.4-rc3
+  tag: 0.3.4-rc4
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []
@@ -277,14 +277,26 @@ collector:
                 formula: IndexingRate + SearchRate
                 operator: "=="
                 value: 0                                   
-        resources:
           iamLastActivity:
-            enable: true
-            description: Last user activity
-            global: true
-            constraint:
-              operator: ">="
-              value: 90 # 90 Days
+            - description: Last user activity
+              enable: true
+              constraint:
+                operator: ">="
+                value: 90 # 90 Days
           elasticip:
-            enable: true
-            description: Not associated
+            - description: Not associated
+              enable: true
+          ec2_volumes:
+            - description: Not in used
+              enable: true
+          apigateway:
+            - description: API calls
+              enable: true
+              metrics:
+                - name: Count
+                  statistic: Sum
+              period: 24h 
+              start_time: 168h # 24h * 7d 
+              constraint:
+                operator: "=="
+                value: 0

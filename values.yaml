@@ -300,7 +300,3 @@ collector:
               constraint:
                 operator: "=="
                 value: 0
-            enable: true
-            description: Not associated
-          ec2_volumes:
-            enable: true

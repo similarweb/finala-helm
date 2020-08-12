@@ -1,46 +1,51 @@
-{{- if .Values.collector.create  }}
+{{- $root := . -}}
+{{range $name, $collector := .Values.collector }}
+{{- if $collector.create  }}
+{{ $resourceName := printf "%s-%s-collector" (include "finala.fullname" $root) $name }}
+---
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ include "finala.fullname" . }}-collector
+  name: {{ $resourceName }}
   labels:
-{{ include "finala.labels" . | indent 4 }}
-    component: {{ include "finala.fullname" . }}-collector
+{{ include "finala.labels" $root | indent 4 }}
+    component: {{ $resourceName }}
 spec:
   concurrencyPolicy: "Forbid"
-  schedule: "{{ .Values.collector.schedule }}"
+  schedule: "{{ $collector.schedule }}"
   jobTemplate:
     spec:
       template:
         metadata:
           labels:
-{{ include "finala.labels" . | indent 12 }}
-            component: {{ include "finala.fullname" . }}-collector
+{{ include "finala.labels" $root | indent 12 }}
+            component: {{ $resourceName }}
           annotations:
-{{- if .Values.collector.annotations }}
-{{ toYaml .Values.collector.annotations | indent 12}}
+{{- if $collector.annotations }}
+{{ toYaml $collector.annotations | indent 12}}
 {{- end }}
-{{ include "finala.annotations" . | indent 12 }}
+{{ include "finala.annotations" $root | indent 12 }}
         spec:
           restartPolicy: "OnFailure"
           containers:
-            - name: {{ .Chart.Name }}-collector
-              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-              imagePullPolicy: {{ .Values.image.pullPolicy }}
+            - name: {{ $resourceName }}
+              image: "{{ $root.Values.image.repository }}:{{ $root.Values.image.tag }}"
+              imagePullPolicy: {{ $root.Values.image.pullPolicy }}
               resources:
-                {{- toYaml .Values.collector.resources | nindent 16 }}
+                {{- toYaml $collector.resources | nindent 16 }}
               args: ["collector"]
               volumeMounts:
-                - name: {{ include "finala.fullname" . }}-configmap-collector
+                - name: {{ include "finala.fullname" $root }}-configmap-collector
                   mountPath: /etc/finala
               env:
-                {{- include "finala.environmentVars" .Values.collector | nindent 18 }}
+                {{- include "finala.environmentVars" $collector | nindent 18 }}
           volumes:
-            - name: {{ include "finala.fullname" . }}-configmap-collector
+            - name: {{ include "finala.fullname" $root }}-configmap-collector
               configMap:
-                name: {{ include "finala.fullname" . }}-configmap-collector
+                name: {{ include "finala.fullname" $root }}-configmap-collector
                 items:
                   - key: config
                     path: config.yaml
 
-{{- end -}}
+{{- end }}
+{{- end }}

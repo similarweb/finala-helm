@@ -1,40 +1,44 @@
-{{- if and (.Values.collector.create) (.Values.collector.run_at_deployment)  }}
-
+{{- $root := . -}}
+{{range $name, $collector := .Values.collector }}
+{{- if and ( $collector.create) ( $collector.run_at_deployment)  }}
+{{ $resourceName := printf "%s-%s-collector-at-deployment-{{ now | unixEpoch }}" (include "finala.fullname" $root) $name }}
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "finala.fullname" . }}-collector-at-deployment-{{ now | unixEpoch }}
+  name: {{ $resourceName }}
   labels:
-{{ include "finala.labels" . | indent 4 }}
-    component: {{ include "finala.fullname" . }}-at-deployment
+{{ include "finala.labels" $root | indent 4 }}
+    component: {{ include "finala.fullname" $root }}-at-deployment
 spec:
   template:
     metadata:
       labels:
-{{ include "finala.labels" . | indent 8 }}
-        component: {{ include "finala.fullname" . }}-at-deployment
+{{ include "finala.labels" $root | indent 8 }}
+        component: {{ include "finala.fullname" $root }}-at-deployment
       annotations:
-{{- if .Values.collector.annotations }}
-{{ toYaml .Values.collector.annotations | indent 8}}
+{{- if  $collector.annotations }}
+{{ toYaml  $collector.annotations | indent 8}}
 {{- end }}
-{{ include "finala.annotations" . | indent 8 }}
+{{ include "finala.annotations" $root | indent 8 }}
     spec:
       restartPolicy: Never
       containers:
-        - name: {{ .Chart.Name }}-collector-at-deployment
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        - name: {{ $resourceName }}
+          image: "{{ $root.Values.image.repository }}:{{ $root.Values.image.tag }}"
           args: ["collector"]
           volumeMounts:
-            - name: {{ include "finala.fullname" . }}-configmap-collector
+            - name: {{ include "finala.fullname" $root }}-configmap-collector
               mountPath: /etc/finala
           env:
-            {{- include "finala.environmentVars" .Values.collector | nindent 12 }}   
+            {{- include "finala.environmentVars" $collector | nindent 12 }}   
       volumes:
-        - name: {{ include "finala.fullname" . }}-configmap-collector
+        - name: {{ include "finala.fullname" $root }}-configmap-collector
           configMap:
-            name: {{ include "finala.fullname" . }}-configmap-collector
+            name: {{ include "finala.fullname" $root }}-configmap-collector
             items:
               - key: config
                 path: config.yaml
       
-{{- end -}}
+{{- end }}
+{{- end }}

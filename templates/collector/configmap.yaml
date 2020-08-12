@@ -16,6 +16,11 @@ data:
       address: http://{{ template "finala.fullname" . }}-api
       bulk_interval: {{ .Values.collector.application.api_server.bulk_interval }}
     providers:
-      {{- toYaml .Values.collector.application.providers | nindent 6 }}
-
+      aws: 
+        {{- toYaml .Values.collector.application.providers.aws.accounts | nindent 6 -}}
+        {{- if .Values.collector.application.providers.aws.metrics }}
+        {{- toYaml .Values.collector.application.providers.aws.metrics | nindent 6 -}}
+        {{- else -}}
+        {{ .Files.Get "aws-metrics.yaml" | nindent 6 }}
+        {{- end }}
 {{- end -}}

@@ -1,7 +1,7 @@
 {{- $root := . -}}
 {{range $name, $collector := .Values.collector }}
 {{- if and ( $collector.create) ( $collector.run_at_deployment)  }}
-{{ $resourceName := printf "%s-%s-collector-at-deployment-{{ now | unixEpoch }}" (include "finala.fullname" $root) $name }}
+{{ $resourceName := printf "%s-%s-collector-at-deployment" (include "finala.fullname" $root) $name }}
 ---
 apiVersion: batch/v1
 kind: Job

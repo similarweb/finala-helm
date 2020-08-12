@@ -1,26 +1,31 @@
-{{- if .Values.collector.create  }}
+{{- $root := . -}}
+{{range $name, $collector := .Values.collector }}
+{{- if $collector.create  }}
+{{ $resourceName := printf "%s-%s-configmap-collector" (include "finala.fullname" $root) $name }}
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "finala.fullname" . }}-configmap-collector
+  name: {{ $resourceName }}
   labels:
-{{ include "finala.labels" . | indent 4 }}
+{{ include "finala.labels" $root | indent 4 }}
   annotations:
-{{ include "finala.annotations" . | indent 4 }}
+{{ include "finala.annotations" $root | indent 4 }}
 data: 
   config: |-
     ---
-    log_level: {{ .Values.collector.application.log_level }}
-    name: {{ .Values.collector.application.name }}
+    log_level: {{ $collector.application.log_level }}
+    name: {{ $name }}
     api_server:
-      address: http://{{ template "finala.fullname" . }}-api
-      bulk_interval: {{ .Values.collector.application.api_server.bulk_interval }}
+      address: http://{{ template "finala.fullname" $root }}-api
+      bulk_interval: {{ $collector.application.api_server.bulk_interval }}
     providers:
       aws: 
-        {{- toYaml .Values.collector.application.providers.aws.accounts | nindent 6 -}}
-        {{- if .Values.collector.application.providers.aws.metrics }}
-        {{- toYaml .Values.collector.application.providers.aws.metrics | nindent 6 -}}
+        {{- toYaml $collector.application.providers.aws.accounts | nindent 6 -}}
+        {{- if $collector.application.providers.aws.metrics }}
+        {{- toYaml $collector.application.providers.aws.metrics | nindent 6 -}}
         {{- else -}}
-        {{ .Files.Get "aws-metrics.yaml" | nindent 6 }}
+        {{ $root.Files.Get "aws-metrics.yaml" | nindent 6 }}
         {{- end }}
-{{- end -}}
+{{- end }}
+{{- end }}

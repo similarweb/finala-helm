@@ -92,31 +92,30 @@ notifier:
       #           - '#slack-channelname'
 
 collector:
-  create: true
-  schedule: "0 8 * * *" # Run every day at 08:00
-  annotations: 
-    # iam.amazonaws.com/role: arn:aws:iam::ACCOUNT-ID:role/finala-production
-  run_at_deployment: true
-  environmentVars: 
-    # AWS_ACCESS_KEY_ID: value
-    # AWS_SECRET_ACCESS_KEY: value
-  resources:
-    # requests:
-    #   cpu: 100m
-    #   memory: 128Mi
-  application:
-    name: general
-    log_level: INFO
-    api_server: 
-      bulk_interval: 5s
-    providers:
-      aws:
-        accounts: 
-          - name: main
-            regions:
-              - us-east-1
-              - us-west-2
-        # metrics:
-          # By default the metrics will be loaded from aws-metrics.yaml file. 
-          # You can uncomment the metrics section and add your specific metrics that will be collected. 
-          
+  general: 
+    create: true
+    schedule: "0 8 * * *" # Run every day at 08:00
+    annotations: 
+      # iam.amazonaws.com/role: arn:aws:iam::ACCOUNT-ID:role/finala-production
+    run_at_deployment: true
+    environmentVars: 
+      # AWS_ACCESS_KEY_ID: value
+      # AWS_SECRET_ACCESS_KEY: value
+    resources:
+      # requests:
+      #   cpu: 100m
+      #   memory: 128Mi
+    application:
+      log_level: INFO
+      api_server: 
+        bulk_interval: 5s
+      providers:
+        aws:
+          accounts: 
+            - name: main
+              regions:
+                - us-east-1
+                - us-west-2
+          # metrics:
+            # By default the metrics will be loaded from aws-metrics.yaml file. 
+            # You can uncomment the metrics section and add your specific metrics that will be collected. 

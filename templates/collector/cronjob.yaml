@@ -2,6 +2,7 @@
 {{range $name, $collector := .Values.collector }}
 {{- if $collector.create  }}
 {{ $resourceName := printf "%s-%s-collector" (include "finala.fullname" $root) $name }}
+{{ $configMapName := printf "%s-%s-configmap-collector" (include "finala.fullname" $root) $name }}
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -35,14 +36,14 @@ spec:
                 {{- toYaml $collector.resources | nindent 16 }}
               args: ["collector"]
               volumeMounts:
-                - name: {{ include "finala.fullname" $root }}-configmap-collector
+                - name: {{ $configMapName }}
                   mountPath: /etc/finala
               env:
                 {{- include "finala.environmentVars" $collector | nindent 18 }}
           volumes:
-            - name: {{ include "finala.fullname" $root }}-configmap-collector
+            - name: {{ $configMapName }}
               configMap:
-                name: {{ include "finala.fullname" $root }}-configmap-collector
+                name: {{ $configMapName }}
                 items:
                   - key: config
                     path: config.yaml

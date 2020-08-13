@@ -21,11 +21,12 @@ data:
       bulk_interval: {{ $collector.application.api_server.bulk_interval }}
     providers:
       aws: 
-        {{- toYaml $collector.application.providers.aws.accounts | nindent 6 -}}
-        {{- if $collector.application.providers.aws.metrics }}
-        {{- toYaml $collector.application.providers.aws.metrics | nindent 6 -}}
-        {{- else -}}
-        {{ $root.Files.Get "aws-metrics.yaml" | nindent 6 }}
-        {{- end }}
+        accounts:
+          {{- toYaml $collector.application.providers.aws.accounts | nindent 8 -}}
+          {{- if $collector.application.providers.aws.metrics }}
+          {{- toYaml $collector.application.providers.aws.metrics | nindent 8 -}}
+          {{- else -}}
+          {{ $root.Files.Get "aws-metrics.yaml" | nindent 8 }}
+          {{- end }}
 {{- end }}
 {{- end }}

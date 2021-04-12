@@ -15,7 +15,7 @@ spec:
     - host: {{ .Values.api.ingress.host  | replace "http://" "" | replace "https://" "" }}
       http:
         paths:
-          - path: /
+          - path: {{ .Values.api.ingress.path | default "/" }}
             backend:
               serviceName: {{ include "finala.fullname" . }}-api
               servicePort: {{ .Values.api.service.externalPort }}

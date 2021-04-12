@@ -22,6 +22,10 @@ spec:
       labels:
 {{ include "finala.labels" . | indent 8 }}
         component: {{ include "finala.fullname" . }}-ui
+      annotations:
+{{- if .Values.ui.annotations }}
+{{ toYaml .Values.ui.annotations | indent 8}}
+{{- end }}
     spec:
       containers:
         - name: {{ .Chart.Name }}-ui

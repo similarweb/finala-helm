@@ -23,6 +23,9 @@ spec:
 {{- end }}
 {{ include "finala.annotations" $root | indent 8 }}
     spec:
+{{- if  $collector.serviceaccount.create }}
+      serviceAccountName: {{ include "finala.fullname" $root }}-sa-collector
+{{- end }}
       restartPolicy: Never
       containers:
         - name: {{ $resourceName }}

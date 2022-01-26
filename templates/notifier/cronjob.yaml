@@ -22,6 +22,9 @@ spec:
 {{- end }}
 {{ include "finala.annotations" . | indent 12 }}
         spec:
+{{- if .Values.notifier.serviceaccount.create  }}
+          serviceAccountName: {{ include "finala.fullname" . }}-sa-notifier
+{{- end }}
           restartPolicy: "OnFailure"
           containers:
             - name: {{ .Chart.Name }}-notifier

@@ -15,6 +15,10 @@ storage:
 
 api:
   create: true
+  serviceaccount:
+    create: false
+    annotations: 
+      # iam.amazonaws.com/role: arn:aws:iam::ACCOUNT-ID:role/finala-production
   replicas: 1
   annotations: {}
   application:
@@ -66,6 +70,10 @@ ui:
 
 notifier:
   create: true
+  serviceaccount:
+    create: false
+    annotations: 
+      # iam.amazonaws.com/role: arn:aws:iam::ACCOUNT-ID:role/finala-production
   schedule: "0 8 * * 1" # Run once a week on Monday at 08:00
   annotations: {}
   environmentVars: 
@@ -94,6 +102,10 @@ notifier:
 collector:
   general: 
     create: true
+    serviceaccount:
+      create: false
+      annotations: 
+        # iam.amazonaws.com/role: arn:aws:iam::ACCOUNT-ID:role/finala-production
     schedule: "0 8 * * *" # Run every day at 08:00
     annotations: 
       # iam.amazonaws.com/role: arn:aws:iam::ACCOUNT-ID:role/finala-production

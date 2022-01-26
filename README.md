@@ -39,6 +39,8 @@ Parameter | Description | Default
 `api.create` | If true, create API component | `true`
 `api.replicas` | The replica count of the webserver | `1`
 `api.annotations` | The annotations to be used in the API deployment | `{}`
+`api.serviceaccount.create` | If true, create a service account for API | `false`
+`api.serviceaccount.annotations` | The annotations used in the service account | `{}`
 `api.application.log_level` | The API application log level | `info`
 `api.application.storage.elasticsearch.active` | Use elasticsearch storage | `true`
 `api.application.storage.elasticsearch.index` | Elasticsearch index | `general`
@@ -68,6 +70,8 @@ Parameter | Description | Default
 `collector.create` | If true, create collector component | `true`
 `collector.schedule` | Schedule for the CronJob  | `* * 1 * *`
 `collector.annotations` | The annotations used  | `{}`
+`collector.serviceaccount.create` | If true, create a service account for collector | `false`
+`collector.serviceaccount.annotations` | The annotations used in the service account | `{}`
 `collector.run_at_deployment` | Run the collector on the deployment  | `true`
 `collector.environmentVars` | Collector environment variables  | `{}`
 `collector.resources` | The [resources] to allocate for the collector containers | undefined
@@ -76,6 +80,8 @@ Parameter | Description | Default
 `collector.application.api_server.bulk_interval` | The bulk interval of sending the resources detected to the api component | `5s`
 | **notifier** |
 `notifier.create` | Should we create Notifier component| `true`
+`notifier.serviceaccount.create` | If true, create a service account for notifier | `false`
+`notifier.serviceaccount.annotations` | The annotations used in the service account | `{}`
 `notifier.schedule` | Schedule for the Notifier CronJob  | `0 8 * * 0`
 `notifier.annotations` | The annotations for Notifier  | `{}`
 `notifier.environmentVars` | Notifier environment variables  | `{}`

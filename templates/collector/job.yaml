@@ -3,6 +3,7 @@
 {{- if and ( $collector.create) ( $collector.run_at_deployment)  }}
 {{ $resourceName := printf "%s-%s-collector-at-deployment" (include "finala.fullname" $root) $name }}
 {{ $configMapName := printf "%s-%s-configmap-collector" (include "finala.fullname" $root) $name }}
+{{ $saName := printf "%s-%s-sa-collector" (include "finala.fullname" $root) $name }}
 ---
 apiVersion: batch/v1
 kind: Job
@@ -24,7 +25,7 @@ spec:
 {{ include "finala.annotations" $root | indent 8 }}
     spec:
 {{- if  $collector.serviceaccount.create }}
-      serviceAccountName: {{ include "finala.fullname" $root }}-sa-collector
+      serviceAccountName: {{ $saName }}
 {{- end }}
       restartPolicy: Never
       containers:

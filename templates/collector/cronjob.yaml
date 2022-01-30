@@ -3,6 +3,7 @@
 {{- if $collector.create  }}
 {{ $resourceName := printf "%s-%s-collector" (include "finala.fullname" $root) $name }}
 {{ $configMapName := printf "%s-%s-configmap-collector" (include "finala.fullname" $root) $name }}
+{{ $saName := printf "%s-%s-sa-collector" (include "finala.fullname" $root) $name }}
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -27,6 +28,9 @@ spec:
 {{- end }}
 {{ include "finala.annotations" $root | indent 12 }}
         spec:
+{{- if  $collector.serviceaccount.create }}
+          serviceAccountName: {{ $saName }}
+{{- end }}
           restartPolicy: "OnFailure"
           containers:
             - name: {{ $resourceName }}

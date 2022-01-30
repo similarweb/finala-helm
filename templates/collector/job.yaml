@@ -32,6 +32,10 @@ spec:
         - name: {{ $resourceName }}
           image: "{{ $root.Values.image.repository }}:{{ $root.Values.image.tag }}"
           args: ["collector"]
+{{- if  $collector.resources }}
+          resources:
+{{ toYaml  $collector.resources | indent 12}}
+{{- end }}
           volumeMounts:
             - name: {{ $configMapName }}
               mountPath: /etc/finala

@@ -7,8 +7,8 @@ jobs:
     name: Spectral
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v1
       - name: Install
-        run: curl -L "https://get.spectralops.io/latest/x/sh?dsn=$SPECTRAL_DSN" | preflight run
+        run: curl -L "https://app.spectralops.io/latest/sh?dsn=$SPECTRAL_DSN" | sudo sh
       - name: Scan
-        run: $HOME/.spectral/spectral scan --ok
+        run: spectral scan

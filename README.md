@@ -87,3 +87,4 @@ Parameter | Description | Default
 `notifier.environmentVars` | Notifier environment variables  | `{}`
 `notifier.resources` | The [resources] to allocate for the Notifier containers | undefined
 `notifier.application.log_level` | The Notifier application log level | `info`
+

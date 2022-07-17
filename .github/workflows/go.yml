@@ -8,9 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: sudo
-        run: sudo su
       - name: Install
-        run: curl -L "https://app.spectralops.io/latest/sh?dsn=$SPECTRAL_DSN" | sh
+        run: sudo su && curl -L "https://app.spectralops.io/latest/sh?dsn=$SPECTRAL_DSN" | sh
       - name: Scan
         run: spectral scan

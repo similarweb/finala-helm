@@ -27,6 +27,9 @@ spec:
 {{ toYaml .Values.api.annotations | indent 8}}
 {{- end }}
     spec:
+{{- if .Values.api.serviceaccount.create  }}
+      serviceAccountName: {{ include "finala.fullname" . }}-sa-api
+{{- end }}
       containers:
         - name: {{ .Chart.Name }}-api
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

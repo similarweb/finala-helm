@@ -19,19 +19,6 @@ spec:
         - name: esconfig
           configMap:
             name: {{ include "finala.fullname" . }}-elasticsearch-config
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-              - matchExpressions:
-                  - key: NodeType
-                    operator: In
-                    values:
-                      - gitops
-      tolerations:
-        - key: "gitops"
-          value: "true"
-          effect: "NoSchedule"
       containers:
       - name: {{ include "finala.fullname" . }}-elasticsearch
         image: docker.elastic.co/elasticsearch/elasticsearch:8.5.0

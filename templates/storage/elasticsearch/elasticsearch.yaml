@@ -15,9 +15,26 @@ spec:
       labels:
         component: {{ include "finala.fullname" . }}-elasticsearch
     spec:
+      volumes:
+        - name: esconfig
+          configMap:
+            name: {{ include "finala.fullname" . }}-elasticsearch-config
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: NodeType
+                    operator: In
+                    values:
+                      - gitops
+      tolerations:
+        - key: "gitops"
+          value: "true"
+          effect: "NoSchedule"
       containers:
       - name: {{ include "finala.fullname" . }}-elasticsearch
-        image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+        image: docker.elastic.co/elasticsearch/elasticsearch:8.5.0
         env:
         - name: discovery.type
           value: single-node
@@ -29,4 +46,10 @@ spec:
           requests:
             cpu: 500m
             memory: 1Gi
+        volumeMounts:
+        {{- range $path, $config := .Values.storage.esConfig }}
+        - name: esconfig
+          mountPath: /usr/share/elasticsearch/config/{{ $path }}
+          subPath: {{ $path }}
+        {{- end -}}
 {{- end }}

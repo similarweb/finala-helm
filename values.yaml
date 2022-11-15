@@ -13,6 +13,13 @@ fullnameOverride: ""
 
 storage:
   type: internal
+  # Elasticsearch application configurations for http access. Remove for https and add other configurations. Example: https://github.com/elastic/helm-charts/blob/7.17/elasticsearch/examples/security/values.yaml
+  esConfig:
+    elasticsearch.yml: |
+      network.host: 0.0.0.0
+      xpack.security.enabled: false
+      xpack.security.http.ssl.enabled: false
+      xpack.security.transport.ssl.enabled: false
 
 api:
   create: true
